@@ -4,7 +4,7 @@ const { Op } = require("sequelize");
 
 async function createNote(req, res, next) {
     if (!req.user) {
-        res.redirect("/signin");
+        return next(createError[400]("Unauthorized request!"));
     } else {
         try {
             const content = req.body.content;
@@ -25,7 +25,7 @@ async function createNote(req, res, next) {
 
 async function deleteNote(req, res, next) {
     if (!req.user) {
-        res.redirect("/signin");
+        return next(createError[400]("Unauthorized request!"));
     } else {
         try {
             const id = req.params.id;
@@ -46,7 +46,7 @@ async function deleteNote(req, res, next) {
 
 async function getNotes(req, res, next) {
     if (!req.user) {
-        res.redirect("/signin");
+        return next(createError[400]("Unauthorized request!"));
     } else {
         try {
             let search = req.query.search;

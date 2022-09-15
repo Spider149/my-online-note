@@ -3,11 +3,17 @@ body {
     font-family: "Work Sans", sans-serif;
 }
 
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
 input[type="text"],
 input[type="password"],
 input[type="submit"] {
     padding: 12px 20px;
-    margin: 8px 0;
+    margin: 0 0 10px;
     border: 1px solid #ccc;
 }
 
@@ -72,4 +78,30 @@ main > h1 {
 .pagination__item.disabled {
     background-color: transparent;
     border: none;
+}
+
+.warning-message {
+    position: relative;
+    color: red;
+    opacity: 0;
+    visibility: hidden;
+    left: -10px;
+    transition: all 0.3s;
+    padding: 0 0 10px;
+}
+
+.warning-message.show {
+    opacity: 1;
+    visibility: visible;
+    left: 0;
+}
+
+input[type="text"]:invalid,
+input[type="password"]:invalid {
+    border: 1px solid red;
+}
+
+input[type="text"]:valid,
+input[type="password"]:valid {
+    border: 1px solid green;
 }
