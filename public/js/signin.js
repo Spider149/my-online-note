@@ -2,10 +2,12 @@ window.addEventListener("DOMContentLoaded", (event) => {
     const signinForm = document.getElementById("sign-in-form");
     const usernameInput = document.getElementById("username-input");
     const passwordInput = document.getElementById("password-input");
-    const warningMessage = document.querySelector(".warning-message");
-    function showWarning(content) {
-        warningMessage.innerHTML = content;
-        warningMessage.classList.add("show");
+    const alertMessage = document.querySelector(".alert-message");
+
+    function showAlert(content, color) {
+        alertMessage.innerHTML = content;
+        alertMessage.classList.add("show");
+        alertMessage.style.color = color;
     }
 
     async function signin(e) {
@@ -24,7 +26,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
         if (res.status === 200) window.location.href = "../dashboard";
         else {
             res = await res.json();
-            showWarning(res.error);
+            showAlert(res.error, "red");
         }
     }
 

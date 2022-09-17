@@ -14,4 +14,6 @@ router.post("/signup", authController.signUp);
 
 router.delete("/signout", authController.signOut);
 
+router.get("/activate/:token", authController.activateAccount);
+
 module.exports = router;

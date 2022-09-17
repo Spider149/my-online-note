@@ -10,13 +10,16 @@ module.exports = {
             },
             name: {
                 type: Sequelize.STRING,
+                allowNull: false,
             },
             username: {
                 type: Sequelize.STRING,
                 unique: true,
+                allowNull: false,
             },
             password: {
                 type: Sequelize.STRING,
+                allowNull: false,
             },
             createdAt: {
                 allowNull: false,

@@ -20,7 +20,7 @@ app.get("/dashboard", authMiddleware, (req, res, next) => {
 });
 
 app.use((req, res) => {
-    res.status(404).send("404 Not found");
+    res.status(404).json({ error: "404 Not found" });
 });
 
 app.use((err, req, res, next) => {

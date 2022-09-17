@@ -11,10 +11,23 @@ body {
 
 input[type="text"],
 input[type="password"],
-input[type="submit"] {
+input[type="submit"],
+input[type="email"] {
     padding: 12px 20px;
     margin: 0 0 10px;
     border: 1px solid #ccc;
+}
+
+input[type="text"]:invalid,
+input[type="password"]:invalid,
+input[type="email"]:invalid {
+    border: 1px solid red;
+}
+
+input[type="text"]:valid,
+input[type="password"]:valid,
+input[type="email"]:valid {
+    border: 1px solid green;
 }
 
 input[type="submit"] {
@@ -80,9 +93,8 @@ main > h1 {
     border: none;
 }
 
-.warning-message {
+.alert-message {
     position: relative;
-    color: red;
     opacity: 0;
     visibility: hidden;
     left: -10px;
@@ -90,18 +102,8 @@ main > h1 {
     padding: 0 0 10px;
 }
 
-.warning-message.show {
+.alert-message.show {
     opacity: 1;
     visibility: visible;
     left: 0;
-}
-
-input[type="text"]:invalid,
-input[type="password"]:invalid {
-    border: 1px solid red;
-}
-
-input[type="text"]:valid,
-input[type="password"]:valid {
-    border: 1px solid green;
 }

@@ -82,7 +82,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
     }
 
     async function initialize() {
-        let res = await loadDataPage(currentPage);
+        let res = (await loadDataPage(currentPage)).msg;
         let count = res.count;
         let notes = res.rows;
         for (let note of notes) {

@@ -3,31 +3,21 @@ const utils = require("../utils");
 const createError = require("http-errors");
 const path = require("path");
 const axios = require("axios");
+const sendMail = require("../sendMail");
+const { format } = require("path");
 require("dotenv").config();
-
-const usernameRegex = /^[a-zA-Z][a-zA-Z0-9]{5,19}$/;
-const passwordRegex = /^[a-zA-Z0-9]{6,}$/;
-const nameRegex =
-    /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s]{3,40}$/;
-
-function checkUserInput(username, password, name) {
-    if (usernameRegex.test(username) && passwordRegex.test(password)) {
-        if (name) return nameRegex.test(name);
-        return true;
-    }
-    return false;
-}
 
 async function signUp(req, res, next) {
     try {
-        const { username, password, name, captchaToken } = req.body;
+        const { username, password, email, name, captchaToken } = req.body;
 
-        if (!username || !password || !name || !captchaToken) {
+        if (!username || !password || !name || !captchaToken || !email) {
             return next(createError.BadRequest("Not enough information"));
         }
-        if (!checkUserInput(username, password, name))
+
+        if (!utils.checkUserInput(username, password, name, email))
             return next(
-                createError.BadRequest("Invalid name/username/password")
+                createError.BadRequest("Invalid name/username/password/email")
             );
 
         let verifyCaptchaResponse = (
@@ -49,13 +39,38 @@ async function signUp(req, res, next) {
 
         if (user) return next(createError[409]("User is existing"));
 
-        user = await Account.create({
-            username: username,
-            password: utils.hashPassword(password),
-            name: name,
+        user = await Account.findOne({
+            where: { formattedEmail: utils.formatEmail(email) },
         });
 
-        res.status(200).send("Created");
+        if (user)
+            return next(
+                createError[409]("This email is already used by another user")
+            );
+
+        const token = utils.jwtToken.createToken({
+            username,
+            password,
+            email,
+            name,
+        });
+
+        sendMail({
+            to: email,
+            subject: "My online note: Account verification",
+            text: `Please click this link to active your account: https://my-online-note.herokuapp.com/activate/${token}`,
+        })
+            .then((rs) => {
+                res.status(200).json({
+                    msg: "Please check your email to activate your account. If you don't see our email, check in spam folder.",
+                });
+            })
+            .catch((err) => {
+                console.log(err);
+                return next(
+                    createError[424]("An error occurs when sending email")
+                );
+            });
     } catch (err) {
         return next(createError[400]("An error occurs"));
     }
@@ -68,19 +83,24 @@ async function signIn(req, res, next) {
         if (!username || !password) {
             return next(createError.BadRequest("Not enough information"));
         }
-        if (!checkUserInput(username, password))
+        if (!utils.checkUserInput(username, password))
             return next(createError.BadRequest("Invalid username/password"));
 
         const user = await Account.findOne({ where: { username: username } });
 
         if (!user) return next(createError[400]("Invalid username/password"));
         if (utils.comparePassword(password, user.password)) {
-            const token = utils.jwtToken.createToken(user.id, user.username);
+            const token = utils.jwtToken.createToken({
+                id: user.id,
+                username: user.username,
+            });
             res.cookie("token", token, {
                 secure: true,
                 httpOnly: true,
             });
-            res.status(200).send("signin");
+            res.status(200).json({
+                msg: "Sign in success",
+            });
         } else {
             return next(createError[400]("Invalid username/password"));
         }
@@ -91,7 +111,7 @@ async function signIn(req, res, next) {
 
 function signOut(req, res, next) {
     res.clearCookie("token");
-    res.status(200).send("signout");
+    res.status(200).json({ msg: "Sign out success" });
 }
 
 function displaySignUpPage(req, res, next) {
@@ -106,10 +126,34 @@ function displaySignInPage(req, res, next) {
     } else res.sendFile(path.resolve(__dirname + "/../views/signin.html"));
 }
 
+async function activateAccount(req, res, next) {
+    try {
+        const token = req.params.token;
+        if (token) {
+            let decoded = utils.jwtToken.verifyToken(token);
+            let { username, password, name, email } = decoded;
+            let user = await Account.findOne({ where: { username: username } });
+            if (user)
+                return next(createError[400]("Account is already created!"));
+            await Account.create({
+                username,
+                password: utils.hashPassword(password),
+                name,
+                email,
+                formattedEmail: utils.formatEmail(email),
+            });
+            res.status(201).json({ msg: "Account created!" });
+        } else return next(createError[400]("Missing token"));
+    } catch (error) {
+        return next(createError[400]("Invalid token"));
+    }
+}
+
 module.exports = {
     signIn,
     signOut,
     signUp,
     displaySignInPage,
     displaySignUpPage,
+    activateAccount,
 };

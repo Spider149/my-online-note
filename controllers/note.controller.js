@@ -15,7 +15,7 @@ async function createNote(req, res, next) {
                 accountId: userId,
                 name: name,
             });
-            return res.status(201).send(note);
+            return res.status(201).json({ msg: note });
         } catch (e) {
             console.log(e);
             return next(createError[400]("An error occurs"));
@@ -37,7 +37,7 @@ async function deleteNote(req, res, next) {
                 return next(createError[400]("Wrong id"));
             }
             await note.destroy();
-            return res.status(200).send("Deleted");
+            return res.status(200).json({ msg: "Note deleted" });
         } catch (e) {
             return next(createError[400]("An error occurs"));
         }
@@ -66,7 +66,7 @@ async function getNotes(req, res, next) {
                 offset: (page - 1) * limit,
                 order: [["createdAt", "DESC"]],
             });
-            return res.status(200).send(notes);
+            return res.status(200).json({ msg: notes });
         } catch (e) {
             console.log(e);
             return next(createError[400]("An error occurs"));
