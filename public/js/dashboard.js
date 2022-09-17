@@ -36,7 +36,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
             let response = await fetch("../signout", {
                 method: "DELETE",
             });
-            if (response.status === 200) window.location.href = "../signin";
+            if (response.status === 200) window.location.href = "../signIn";
         }
     }
 

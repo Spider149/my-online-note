@@ -1,20 +1,21 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const axios = require("axios");
 require("dotenv").config();
 
-const usernameRegex = /^[a-zA-Z][a-zA-Z0-9]{5,19}$/;
-const emailRegex = /^[a-zA-Z0-9](\.?[a-zA-Z0-9]){5,}@g(oogle)?mail\.com$/;
-const passwordRegex = /^[a-zA-Z0-9]{6,}$/;
-const nameRegex =
-    /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s]{3,40}$/;
+const userInputToRegexTest = {
+    username: /^[a-zA-Z][a-zA-Z0-9]{5,19}$/,
+    email: /^[a-zA-Z0-9](\.?[a-zA-Z0-9]){5,}@g(oogle)?mail\.com$/,
+    password: /^[a-zA-Z0-9]{6,}$/,
+    name: /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s]{3,40}$/,
+};
 
-function checkUserInput(username, password, name, email) {
-    if (usernameRegex.test(username) && passwordRegex.test(password)) {
-        if (name && email)
-            return nameRegex.test(name) && emailRegex.test(email);
-        return true;
+function checkUserInput(userInputs) {
+    for (let [userInputKey, userInputValue] of Object.entries(userInputs)) {
+        if (!userInputToRegexTest[userInputKey].test(userInputValue))
+            return false;
     }
-    return false;
+    return true;
 }
 
 function formatEmail(email) {
@@ -22,14 +23,14 @@ function formatEmail(email) {
 }
 
 const jwtToken = {
-    createToken(payload) {
+    createToken(payload, expiresIn = "1h") {
         return jwt.sign(payload, process.env.JWT_SECRET, {
-            expiresIn: "1h",
+            expiresIn,
         });
     },
-    verifyToken(token) {
+    verifyToken(token, expiresIn = "1h") {
         const decoded = jwt.verify(token, process.env.JWT_SECRET, {
-            expiresIn: "1h",
+            expiresIn,
         });
         return decoded;
     },
@@ -38,10 +39,26 @@ const jwtToken = {
 const hashPassword = (password) => bcrypt.hashSync(password, 10);
 const comparePassword = (password, hash) => bcrypt.compareSync(password, hash);
 
+const verifyCaptcha = async (captchaToken) => {
+    let verifyCaptchaResponse = (
+        await axios.post(
+            "https://www.google.com/recaptcha/api/siteverify",
+            `secret=${process.env.CAPTCHA_SECRET}&response=${captchaToken}`,
+            {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+            }
+        )
+    ).data;
+    return verifyCaptchaResponse.success;
+};
+
 module.exports = {
     jwtToken,
     hashPassword,
     comparePassword,
     checkUserInput,
     formatEmail,
+    verifyCaptcha,
 };

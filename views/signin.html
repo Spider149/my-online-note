@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Changa+One&family=Work+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/setting.css">
-    <link rel="stylesheet" href="./css/signin.css">
+    <link rel="stylesheet" href="./css/signIn.css">
 </head>
 
 <body>
@@ -19,7 +19,7 @@
     <div class="wrapper">
         <main>
             <h1>Sign in</h1>
-            <form id="sign-in-form">
+            <form id="sign-in-form" class="main-form">
                 <input id="username-input" type="text" placeholder="Username" name="username" required
                     pattern="^[a-zA-Z][a-zA-Z0-9]{5,19}$" title="6-20 characters (first character cannot be a number)">
                 <input id="password-input" type="password" placeholder="Password" name="password" required
@@ -27,10 +27,16 @@
                 <p class="alert-message">Error</p>
                 <input type="submit" value="Submit">
             </form>
-            <a href="../signup">Still not have an account? Sign up here!</a>
+            <div class="sign-up-link">
+                <a href="../signUp">Still not have an account? Sign up here!</a>
+            </div>
+            <div class="forgot-password-link">
+                <a href="../forgotPassword">Forgot your password? Get it back here!</a>
+            </div>
+
         </main>
     </div>
-    <script src="./js/signin.js"></script>
+    <script src="./js/signIn.js"></script>
 </body>
 
 </html>

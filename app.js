@@ -15,7 +15,7 @@ app.use(express.static("public"));
 app.use("/", authRoute);
 app.use("/notes", noteRoute);
 app.get("/dashboard", authMiddleware, (req, res, next) => {
-    if (!req.user) res.redirect("/signin");
+    if (!req.user) res.redirect("/signIn");
     else res.sendFile(path.join(__dirname, "./views/dashboard.html"));
 });
 

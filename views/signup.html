@@ -12,7 +12,7 @@
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/setting.css">
-    <link rel="stylesheet" href="./css/signup.css">
+    <link rel="stylesheet" href="./css/signUp.css">
 </head>
 
 <body>
@@ -20,7 +20,7 @@
     <div class="wrapper">
         <main>
             <h1>Sign up</h1>
-            <form id="sign-up-form">
+            <form id="sign-up-form" class="main-form">
                 <input id="name-input" type="text" placeholder="Name" name="name"
                     pattern="^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s]{3,40}$"
                     title="3-40 characters (Vietnamese unicode is allowed)" required>
@@ -36,11 +36,11 @@
                 <div class="g-recaptcha" data-sitekey="6LefZv4hAAAAALx5bME0A_P02bWPn6LLmG2aHtO3"></div>
                 <input type="submit" value="Submit">
             </form>
-            <a href="../signin">Already have an account? Sign in here!</a>
+            <a href="../signIn">Already have an account? Sign in here!</a>
         </main>
     </div>
 
-    <script src="./js/signup.js" type="module"></script>
+    <script src="./js/signUp.js" type="module"></script>
 </body>
 
 </html>

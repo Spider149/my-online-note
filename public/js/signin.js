@@ -1,5 +1,5 @@
 window.addEventListener("DOMContentLoaded", (event) => {
-    const signinForm = document.getElementById("sign-in-form");
+    const signInForm = document.getElementById("sign-in-form");
     const usernameInput = document.getElementById("username-input");
     const passwordInput = document.getElementById("password-input");
     const alertMessage = document.querySelector(".alert-message");
@@ -10,10 +10,10 @@ window.addEventListener("DOMContentLoaded", (event) => {
         alertMessage.style.color = color;
     }
 
-    async function signin(e) {
+    async function signIn(e) {
         e.preventDefault();
 
-        let res = await fetch("./signin", {
+        let res = await fetch("./signIn", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -30,5 +30,5 @@ window.addEventListener("DOMContentLoaded", (event) => {
         }
     }
 
-    signinForm.addEventListener("submit", signin);
+    signInForm.addEventListener("submit", signIn);
 });

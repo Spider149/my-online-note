@@ -1,15 +1,13 @@
 import { debounce } from "./utils.js";
 
 window.addEventListener("DOMContentLoaded", (event) => {
-    const signUpForm = document.getElementById("sign-up-form");
-    const usernameInput = document.getElementById("username-input");
-    const emailInput = document.getElementById("email-input");
+    const resetPasswordForm = document.getElementById("reset-password-form");
     const passwordInput = document.getElementById("password-input");
     const passwordConfirmInput = document.getElementById(
         "confirm-password-input"
     );
-    const nameInput = document.getElementById("name-input");
     const alertMessage = document.querySelector(".alert-message");
+
     function showAlert(content, color) {
         alertMessage.innerHTML = content;
         alertMessage.classList.add("show");
@@ -51,16 +49,13 @@ window.addEventListener("DOMContentLoaded", (event) => {
             return;
         }
         showAlert("Please wait for response...", "green");
-        let res = await fetch("./signUp", {
+        let res = await fetch(window.location.href, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                name: nameInput.value,
-                username: usernameInput.value,
                 password: passwordInput.value,
-                email: emailInput.value,
                 captchaToken,
             }),
         });
@@ -74,5 +69,5 @@ window.addEventListener("DOMContentLoaded", (event) => {
         }
     }
 
-    signUpForm.addEventListener("submit", signUp);
+    resetPasswordForm.addEventListener("submit", signUp);
 });
