@@ -54,8 +54,11 @@ main {
     cursor: pointer;
 }
 
-#log-out-btn {
+header nav {
     margin-left: auto;
+}
+
+#log-out-btn {
     padding: 10px;
     background-color: rgb(232, 231, 231);
     border-radius: 50%;

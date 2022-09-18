@@ -1,0 +1,26 @@
+{{#section "head"}}
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/setting.css">
+    <link rel="stylesheet" href="./css/{{resourceName}}.css">
+{{/section}}
+<div class="wrapper">
+    <main>
+        <h2>{{title}}</h2>
+        <form id="sign-in-form" class="main-form">
+            <input id="username-input" type="text" placeholder="Username" name="username" required
+                pattern="^[a-zA-Z][a-zA-Z0-9]{5,19}$" title="6-20 characters (first character cannot be a number)">
+            <input id="password-input" type="password" placeholder="Password" name="password" required
+                pattern="^[a-zA-Z0-9]{6,}$" title="minimum 6 characters (alphabet and number is allowed)">
+            <p class="alert-message">Error</p>
+            <input type="submit" value="Submit">
+        </form>
+        <div class="sign-up-link">
+            <a href="../signUp">Still not have an account? Sign up here!</a>
+        </div>
+        <div class="forgot-password-link">
+            <a href="../forgotPassword">Forgot your password? Get it back here!</a>
+        </div>
+    </main>
+</div>
+<script src="./js/{{resourceName}}.js" type="module"></script>

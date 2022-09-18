@@ -113,13 +113,13 @@ function signOut(req, res, next) {
 function displaySignUpPage(req, res, next) {
     if (req.user) {
         res.redirect("/dashboard");
-    } else res.sendFile(path.resolve(__dirname + "/../views/signUp.html"));
+    } else res.render("signUp", { title: "Sign up", resourceName: "signUp" });
 }
 
 function displaySignInPage(req, res, next) {
     if (req.user) {
         res.redirect("/dashboard");
-    } else res.sendFile(path.resolve(__dirname + "/../views/signIn.html"));
+    } else res.render("signIn", { title: "Sign in", resourceName: "signIn" });
 }
 
 async function activateAccount(req, res, next) {
@@ -149,7 +149,10 @@ async function displayForgotPasswordPage(req, res, next) {
     if (req.user) {
         res.redirect("/dashboard");
     } else
-        res.sendFile(path.resolve(__dirname + "/../views/forgotPassword.html"));
+        res.render("forgotPassword", {
+            title: "Forgot password",
+            resourceName: "forgotPassword",
+        });
 }
 
 async function requestForgotPassword(req, res, next) {
@@ -213,7 +216,10 @@ async function displayResetPasswordPage(req, res, next) {
     if (req.user) {
         res.redirect("/dashboard");
     } else
-        res.sendFile(path.resolve(__dirname + "/../views/resetPassword.html"));
+        res.render("resetPassword", {
+            title: "Reset password",
+            resourceName: "resetPassword",
+        });
 }
 
 async function resetPassword(req, res, next) {
