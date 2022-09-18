@@ -57,6 +57,9 @@ const verifyCaptcha = async (captchaToken) => {
 };
 
 const createRateLimiter = (options) => {
+    options.keyGenerator = (req, res) => {
+        return req.clientIp;
+    };
     return rateLimit(options);
 };
 
