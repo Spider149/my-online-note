@@ -1,6 +1,8 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const axios = require("axios");
+const rateLimit = require("express-rate-limit");
+
 require("dotenv").config();
 
 const userInputToRegexTest = {
@@ -54,6 +56,10 @@ const verifyCaptcha = async (captchaToken) => {
     return verifyCaptchaResponse.success;
 };
 
+const createRateLimiter = (options) => {
+    return rateLimit(options);
+};
+
 module.exports = {
     jwtToken,
     hashPassword,
@@ -61,4 +67,5 @@ module.exports = {
     checkUserInput,
     formatEmail,
     verifyCaptcha,
+    createRateLimiter,
 };

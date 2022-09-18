@@ -5,10 +5,12 @@ const cookieParser = require("cookie-parser");
 const authRoute = require("./route/auth.route");
 const noteRoute = require("./route/note.route");
 const authMiddleware = require("./middleware/auth.middleware");
+require("dotenv").config();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.set("trust proxy", process.env.NUMBER_OF_TRUST_PROXIES);
 
 app.use(express.static("public"));
 
@@ -19,6 +21,7 @@ app.get("/dashboard", authMiddleware, (req, res, next) => {
     else res.sendFile(path.join(__dirname, "./views/dashboard.html"));
 });
 
+app.get("/ip", (request, response) => response.send(request.ip));
 app.use((req, res) => {
     res.status(404).json({ error: "404 Not found" });
 });

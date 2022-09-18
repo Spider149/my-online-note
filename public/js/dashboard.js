@@ -1,7 +1,7 @@
 import Pagination from "./pagination.js";
 
 window.addEventListener("DOMContentLoaded", (event) => {
-    const itemPerPage = 8;
+    const itemPerPage = 5;
     let currentPage = 0;
 
     const createForm = document.getElementById("create-form");
@@ -82,7 +82,12 @@ window.addEventListener("DOMContentLoaded", (event) => {
     }
 
     async function initialize() {
-        let res = (await loadDataPage(currentPage)).msg;
+        let res = await loadDataPage(currentPage);
+        if (res.error) {
+            alert(res.error);
+            return;
+        }
+        res = res.msg;
         let count = res.count;
         let notes = res.rows;
         for (let note of notes) {
@@ -94,8 +99,12 @@ window.addEventListener("DOMContentLoaded", (event) => {
                 if (page === currentPage) return;
                 currentPage = page;
 
-                let notes = (await loadDataPage(page)).rows;
-
+                let res = await loadDataPage(page);
+                if (res.error) {
+                    alert(res.error);
+                    return;
+                }
+                let notes = res.msg.rows;
                 noteList.innerHTML = "";
                 for (let note of notes) {
                     addNoteToList(note.id, note.content, note.name);
