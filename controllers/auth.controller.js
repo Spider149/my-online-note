@@ -53,7 +53,7 @@ async function signUp(req, res, next) {
 
         sendMail({
             to: email,
-            subject: "My online note: Account verification",
+            subject: `My online note: Account verification (${username})`,
             text: `Please click this link to active your account: https://my-online-note.herokuapp.com/activate/${token}`,
         })
             .then((rs) => {
@@ -190,7 +190,7 @@ async function requestForgotPassword(req, res, next) {
 
         sendMail({
             to: email,
-            subject: "My online note: Reset your password",
+            subject: `My online note: Reset your password (${user.username})`,
             text: `Please click this link to reset your password: https://my-online-note.herokuapp.com/resetPassword/${token}`,
         })
             .then((rs) => {
