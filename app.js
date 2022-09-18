@@ -21,7 +21,10 @@ app.get("/dashboard", authMiddleware, (req, res, next) => {
     else res.sendFile(path.join(__dirname, "./views/dashboard.html"));
 });
 
-app.get("/ip", (request, response) => response.send(request.ip));
+app.get("/ip", (request, response) =>
+    response.send(request.headers["x-forwarded-for"])
+);
+app.get("/ips", (request, response) => response.json(request));
 app.use((req, res) => {
     res.status(404).json({ error: "404 Not found" });
 });
