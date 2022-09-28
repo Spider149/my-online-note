@@ -1,3 +1,5 @@
+@import url("../css/component/pagination.css");
+
 main {
     max-width: 700px;
     margin: 0 auto;
@@ -52,17 +54,4 @@ main {
 
 .note-button > * {
     cursor: pointer;
-}
-
-header nav {
-    margin-left: auto;
-}
-
-#log-out-btn {
-    padding: 10px;
-    background-color: rgb(232, 231, 231);
-    border-radius: 50%;
-    border: 1px solid transparent;
-    cursor: pointer;
-    box-shadow: 5px 5px 10px 1px rgba(0, 0, 0, 0.2);
 }

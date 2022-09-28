@@ -1,8 +1,11 @@
 <header>
-    <h1>My online note</h1>
+    <h1>
+        <a href="./">My online note</a>
+    </h1>
     {{#if headerWithNavigation}}
         <nav>
-            <button id="log-out-btn"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+            <a href="./profile" class="nav__btn" id="profile-btn"><i class="fa-solid fa-user"></i></a>
+            <button class="nav__btn" id="log-out-btn"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
         </nav>
     {{/if}}
 </header>

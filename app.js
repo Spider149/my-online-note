@@ -5,8 +5,9 @@ const requestIp = require("request-ip");
 const cookieParser = require("cookie-parser");
 const handlebars = require("express-handlebars");
 
-const authRoute = require("./route/auth.route");
-const noteRoute = require("./route/note.route");
+const authRoute = require("./routes/auth.route");
+const noteRoute = require("./routes/note.route");
+const profileRoute = require("./routes/profile.route");
 const authMiddleware = require("./middleware/auth.middleware");
 
 app.engine(
@@ -39,14 +40,14 @@ app.use(express.static("public"));
 
 app.use("/", authRoute);
 app.use("/notes", noteRoute);
-app.get("/dashboard", authMiddleware, (req, res, next) => {
-    if (!req.user) res.redirect("/signIn");
-    else
-        res.render("dashboard", {
-            title: "Dashboard",
-            headerWithNavigation: true,
-            resourceName: "dashboard",
-        });
+app.use("/profile", profileRoute);
+
+app.get("/dashboard", authMiddleware(null, "/signIn"), (req, res, next) => {
+    res.render("dashboard", {
+        title: "Dashboard",
+        headerWithNavigation: true,
+        resourceName: "dashboard",
+    });
 });
 
 app.get("/ip", (req, res) => res.send(req.clientIp));

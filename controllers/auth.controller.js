@@ -1,7 +1,6 @@
 const { Account } = require("../models");
 const utils = require("../utils");
 const createError = require("http-errors");
-const path = require("path");
 const sendMail = require("../sendMail");
 
 require("dotenv").config();
@@ -30,7 +29,7 @@ async function signUp(req, res, next) {
 
         let user = await Account.findOne({ where: { username: username } });
 
-        if (user) return next(createError[409]("User is existing"));
+        if (user) return next(createError[409]("User already existed"));
 
         user = await Account.findOne({
             where: { formattedEmail: utils.formatEmail(email) },
@@ -44,7 +43,7 @@ async function signUp(req, res, next) {
         const token = utils.jwtToken.createToken(
             {
                 username,
-                password,
+                password: utils.hashPassword(password),
                 email,
                 name,
             },
@@ -111,15 +110,11 @@ function signOut(req, res, next) {
 }
 
 function displaySignUpPage(req, res, next) {
-    if (req.user) {
-        res.redirect("/dashboard");
-    } else res.render("signUp", { title: "Sign up", resourceName: "signUp" });
+    res.render("signUp", { title: "Sign up", resourceName: "signUp" });
 }
 
 function displaySignInPage(req, res, next) {
-    if (req.user) {
-        res.redirect("/dashboard");
-    } else res.render("signIn", { title: "Sign in", resourceName: "signIn" });
+    res.render("signIn", { title: "Sign in", resourceName: "signIn" });
 }
 
 async function activateAccount(req, res, next) {
@@ -133,7 +128,7 @@ async function activateAccount(req, res, next) {
                 return next(createError[400]("Account is already created!"));
             await Account.create({
                 username,
-                password: utils.hashPassword(password),
+                password,
                 name,
                 email,
                 formattedEmail: utils.formatEmail(email),
@@ -146,13 +141,10 @@ async function activateAccount(req, res, next) {
 }
 
 async function displayForgotPasswordPage(req, res, next) {
-    if (req.user) {
-        res.redirect("/dashboard");
-    } else
-        res.render("forgotPassword", {
-            title: "Forgot password",
-            resourceName: "forgotPassword",
-        });
+    res.render("forgotPassword", {
+        title: "Forgot password",
+        resourceName: "forgotPassword",
+    });
 }
 
 async function requestForgotPassword(req, res, next) {
@@ -213,13 +205,10 @@ async function requestForgotPassword(req, res, next) {
 }
 
 async function displayResetPasswordPage(req, res, next) {
-    if (req.user) {
-        res.redirect("/dashboard");
-    } else
-        res.render("resetPassword", {
-            title: "Reset password",
-            resourceName: "resetPassword",
-        });
+    res.render("resetPassword", {
+        title: "Reset password",
+        resourceName: "resetPassword",
+    });
 }
 
 async function resetPassword(req, res, next) {
@@ -266,6 +255,7 @@ async function resetPassword(req, res, next) {
         return next(createError[400]("An error occurs"));
     }
 }
+
 module.exports = {
     signIn,
     signOut,

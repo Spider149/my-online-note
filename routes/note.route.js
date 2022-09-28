@@ -1,7 +1,7 @@
 const express = require("express");
 const utils = require("../utils");
 const noteController = require("../controllers/note.controller");
-const authMiddleware = require("../middleware/auth.middleware");
+const authMiddlewareForAPI = require("../middleware/api.auth.middleware");
 
 const router = express.Router();
 const notesRouteRateLimiter = utils.createRateLimiter({
@@ -11,7 +11,7 @@ const notesRouteRateLimiter = utils.createRateLimiter({
 });
 
 router.use(notesRouteRateLimiter);
-router.use(authMiddleware);
+router.use(authMiddlewareForAPI);
 router.get("/", noteController.getNotes);
 router.post("/", noteController.createNote);
 router.delete("/:id", noteController.deleteNote);

@@ -33,7 +33,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
 
     async function logout() {
         if (confirm("Do you really want to log out?") === true) {
-            let response = await fetch("../signout", {
+            let response = await fetch("../signOut", {
                 method: "DELETE",
             });
             if (response.status === 200) window.location.href = "../signIn";

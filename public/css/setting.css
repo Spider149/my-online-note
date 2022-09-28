@@ -1,3 +1,5 @@
+@import url("../css/component/header.css");
+
 body {
     font-family: "Changa One", cursive;
     font-family: "Work Sans", sans-serif;
@@ -44,53 +46,10 @@ input[type="submit"] {
     margin: 0 auto;
 }
 
-header {
-    background-color: #04aa6d;
-    color: white;
-    padding: 15px;
-    font-size: 30px;
-    display: flex;
-    font-weight: bold;
-}
-
 main > h2 {
     font-size: 24px;
     margin-bottom: 10px;
     font-weight: bold;
-}
-
-.pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-}
-
-.pagination__item {
-    height: 40px;
-    width: 40px;
-    background-color: #fff;
-    color: #000;
-    cursor: pointer;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    font-size: 18px;
-    border: 3px solid gray;
-}
-
-.pagination__item.active,
-.pagination__item:hover {
-    background-color: #04aa6d;
-    color: #fff;
-    border: none;
-}
-
-.pagination__item.disabled {
-    background-color: transparent;
-    border: none;
 }
 
 .alert-message {

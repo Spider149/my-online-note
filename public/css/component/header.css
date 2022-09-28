@@ -1,0 +1,38 @@
+header {
+    background-color: #04aa6d;
+    color: white;
+    padding: 15px;
+    font-size: 30px;
+    display: flex;
+    font-weight: bold;
+}
+
+header nav {
+    margin-left: auto;
+}
+
+.nav__btn {
+    display: inline-block;
+    padding: 10px;
+    background-color: rgb(232, 231, 231);
+    border-radius: 50%;
+    border: 1px solid transparent;
+    cursor: pointer;
+    box-shadow: 5px 5px 10px 1px rgba(0, 0, 0, 0.2);
+    font-size: 16px;
+    color: black;
+}
+
+a.nav__btn,
+a.nav__btn:visited,
+a.nav__btn:hover,
+a.nav__btn:active {
+    color: black;
+}
+
+h1 > a {
+    text-decoration: none;
+}
+h1 > a:visited {
+    color: inherit;
+}
